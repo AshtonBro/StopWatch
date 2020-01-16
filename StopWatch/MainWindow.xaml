@@ -1,0 +1,118 @@
+﻿<Window x:Class="StopWatch.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StopWatch"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+        Title="MainWindow" Height="451.112" Width="860.037">
+    <Grid Name="GeneralGrid" ShowGridLines="True">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="GridRow1" Grid.Row="0" >
+            <Label Name="CurTimer" Content="00:00:00" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="48" Height="auto" Width="auto"/>
+        </Grid>
+
+        <Grid Name="GridRow2" Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Vertical" Grid.Column="0">
+
+                <Button Content="Add" Background="Yellow" FontSize="25" ToolTip="Press 'Add' to cut off the desired time period" Click="btAdd_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TimerStage}" Value="Paussed">
+                                    <Setter Property="IsEnabled" Value="True"></Setter>
+                                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="Start" FontSize="25" ToolTip="Press 'Start' to start the timer" Click="btStart_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TimerStage}" Value="Started">
+                                    <Setter Property="IsEnabled" Value="True"></Setter>
+                                    <Setter Property="Background" Value="LightGreen"></Setter>
+                                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="Pause" FontSize="25" ToolTip="Press 'Stop' to stop the timer" Click="btPause_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TimerStage}" Value="Paussed">
+                                    <Setter Property="IsEnabled" Value="True"></Setter>
+                                    <Setter Property="Background" Value="LightCoral"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="Reset" FontSize="25" ToolTip="Press 'Reset' to reset all result" Click="btReset_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TimerStage}" Value="Started">
+                                    <Setter Property="IsEnabled" Value="True"></Setter>
+                                    <Setter Property="Background" Value="LightBlue"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button Content="Save" Background="Aqua" FontSize="25" ToolTip="Press 'Save' to save The TimeFrames in .txt" Click="btSave_Click">
+                    <Button.Style>
+                        <Style>
+                            
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+            </StackPanel>
+
+            <ListView Name="ListItems1" Grid.Column="1" FontSize="12" Background="AntiqueWhite">
+
+                <ListView.View>
+                    <GridView>
+
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Id}">
+                            <GridViewColumn.Header >
+                                <GridViewColumnHeader Content="id:" Width="38" HorizontalContentAlignment="Left" FontSize="22"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Time}">
+                            <GridViewColumn.Header >
+                                <GridViewColumnHeader Content="Time:" Width="75" HorizontalContentAlignment="Left" FontSize="22"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+
+                    </GridView>
+                </ListView.View>
+
+            </ListView>
+
+        </Grid>
+
+    </Grid>
+</Window>
