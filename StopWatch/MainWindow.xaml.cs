@@ -71,6 +71,8 @@ namespace StopWatch
             ListItems1.Items.Add(item);
         }
 
+
+
         private void btStart_Click(object sender, RoutedEventArgs e)
         {
             TimerStage = eTimerStage.Started;

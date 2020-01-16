@@ -27,12 +27,13 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="0">
 
-                <Button Content="Add" Background="Yellow" FontSize="25" ToolTip="Press 'Add' to cut off the desired time period" Click="btAdd_Click">
+                <Button Content="Add" FontSize="25" ToolTip="Press 'Add' to cut off the desired time period" Click="btAdd_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding TimerStage}" Value="Paussed">
+                                <DataTrigger Binding="{Binding TimerStage}" Value="Paused">
                                     <Setter Property="IsEnabled" Value="True"></Setter>
+                                    <Setter Property="Background" Value="Yellow"></Setter>
                                     <Setter Property="Visibility" Value="Collapsed"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>
