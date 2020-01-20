@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:StopWatch"
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        Title="MainWindow" Height="451.112" Width="860.037">
+        Title="MainWindow" Height="451" Width="860" MaxHeight="451" MaxWidth="860">
     <Grid Name="GeneralGrid" ShowGridLines="True">
 
         <Grid.RowDefinitions>
@@ -25,15 +25,14 @@
                 <ColumnDefinition Width="2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Orientation="Vertical" Grid.Column="0">
+            <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
 
-                <Button Content="Add" FontSize="25" ToolTip="Press 'Add' to cut off the desired time period" Click="btAdd_Click">
+                <Button Content="Add" Background="Yellow" FontSize="25" ToolTip="Press 'Add' to cut off the desired time period" Click="btAdd_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding TimerStage}" Value="Paused">
+                                <DataTrigger Binding="{Binding TimerStage}" Value="Paussed">
                                     <Setter Property="IsEnabled" Value="True"></Setter>
-                                    <Setter Property="Background" Value="Yellow"></Setter>
                                     <Setter Property="Visibility" Value="Collapsed"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -41,13 +40,12 @@
                     </Button.Style>
                 </Button>
 
-                <Button Content="Start" FontSize="25" ToolTip="Press 'Start' to start the timer" Click="btStart_Click">
+                <Button Content="Start" FontSize="25" Background="LightGreen" ToolTip="Press 'Start' to start the timer" Click="btStart_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding TimerStage}" Value="Started">
                                     <Setter Property="IsEnabled" Value="True"></Setter>
-                                    <Setter Property="Background" Value="LightGreen"></Setter>
                                     <Setter Property="Visibility" Value="Collapsed"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -81,17 +79,28 @@
                     </Button.Style>
                 </Button>
 
-                <Button Content="Save" Background="Aqua" FontSize="25" ToolTip="Press 'Save' to save The TimeFrames in .txt" Click="btSave_Click">
-                    <Button.Style>
-                        <Style>
-                            
-                        </Style>
-                    </Button.Style>
-                </Button>
+                <Button Name="btSave" Content="Save" Background="Aqua" FontSize="25" ToolTip="Press 'Save' to save The TimeFrames in .txt" Click="btSave_Click" IsEnabled="False"></Button>
+
+                <Grid>
+
+                    <Label Name="Path_label" Content="#" BorderBrush="Black" FontSize="14" BorderThickness="1" 
+                        Background="LightGray" VerticalAlignment="Top" HorizontalAlignment="Right" Width="257"/>
+
+                    <Label Name="Path_label2" Content="#2" BorderBrush="Black" FontSize="14" BorderThickness="1" 
+                        Background="LightGray" VerticalAlignment="Top" HorizontalAlignment="Right" Width="127" Margin="0,0,385,0"/>
+
+                    <Label Name="Path_label3" Content="#3" BorderBrush="Black" FontSize="14" BorderThickness="1" KeyDown="Path_label3_KeyDown"
+                        Background="LightGray" VerticalAlignment="Top" HorizontalAlignment="Right" Width="127" Margin="0,0,258,0"/>
+
+                </Grid>
 
             </StackPanel>
 
-            <ListView Name="ListItems1" Grid.Column="1" FontSize="12" Background="AntiqueWhite">
+
+
+
+
+            <ListView Name="ListItems1" Grid.Column="1" FontSize="12" Background= "LightGray">
 
                 <ListView.View>
                     <GridView>
