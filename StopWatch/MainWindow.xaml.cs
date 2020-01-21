@@ -125,8 +125,8 @@ namespace StopWatch
         }
         private void label1_DoubleClick(object sender, EventArgs e)
         {
-
             Clipboard.SetDataObject(Path_label3.Content);
+            MessageBox.Show("You string was copied");
         }
 
     }
