@@ -83,22 +83,18 @@
 
                 <Grid>
 
-                    <Label Name="Path_label" Content="#" BorderBrush="Black" FontSize="14" BorderThickness="1" 
+                    <Label Name="Path_label" Content="#" BorderBrush="Black" FontSize="14" BorderThickness="1"
                         Background="LightGray" VerticalAlignment="Top" HorizontalAlignment="Right" Width="257"/>
 
-                    <Label Name="Path_label2" Content="#2" BorderBrush="Black" FontSize="14" BorderThickness="1" 
+                    <Label Name="Path_label2" Content="#2" BorderBrush="Black" FontSize="14" BorderThickness="1"
                         Background="LightGray" VerticalAlignment="Top" HorizontalAlignment="Right" Width="127" Margin="0,0,385,0"/>
 
-                    <Label Name="Path_label3" Content="#3" BorderBrush="Black" FontSize="14" BorderThickness="1" KeyDown="Path_label3_KeyDown"
+                    <Label Name="Path_label3" Content="Press key" BorderBrush="Black" FontSize="14" BorderThickness="1"
                         Background="LightGray" VerticalAlignment="Top" HorizontalAlignment="Right" Width="127" Margin="0,0,258,0"/>
 
                 </Grid>
 
             </StackPanel>
-
-
-
-
 
             <ListView Name="ListItems1" Grid.Column="1" FontSize="12" Background= "LightGray">
 
