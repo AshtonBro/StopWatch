@@ -17,7 +17,10 @@ using System.Windows.Threading;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
-
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 namespace StopWatch
 {
     public partial class MainWindow : Window
@@ -29,28 +32,16 @@ namespace StopWatch
 
         public string documentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
-        [DllImport("user32.dll")]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
-        [DllImport("user32.dll")]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
-        private const int HOTKEY_ID = 9000;
-
-        //Modifiers:
-        private const uint MOD_NONE = 0x0000; //(none)
-        private const uint MOD_ALT = 0x0001; //ALT
-        private const uint MOD_CONTROL = 0x0002; //CTRL
-        private const uint MOD_SHIFT = 0x0004; //SHIFT
-        private const uint MOD_WIN = 0x0008; //WINDOWS
-        //CAPS LOCK:
-        private const uint VK_CAPITAL = 0x14;
         public MainWindow()
         {
             InitializeComponent();
             Timer_Loader();
             TimerStage = eTimerStage.Paussed;
             Path_label.Content = $"{documentPath}";
+            TextCompositionManager.AddTextInputHandler(this,
+                new TextCompositionEventHandler(OnTextComposition));
         }
 
         void Timer_Loader()
@@ -67,6 +58,10 @@ namespace StopWatch
                 CurTimer.Content = currentTime;
             }
 
+        }
+        private void OnTextComposition(object sender, TextCompositionEventArgs e)
+        {
+            Path_label3.Content = e.Text;
         }
 
         public enum eTimerStage
@@ -112,6 +107,7 @@ namespace StopWatch
             TimerStage = eTimerStage.Paussed;
             stopWatch.Reset();
             ListItems1.Items.Clear();
+            btSave.IsEnabled = false;
             CurTimer.Content = "00:00:00";
             idCount = 0;
         }
@@ -121,61 +117,16 @@ namespace StopWatch
             // Create a string array with the lines of text
             // Append text to an existing file named "WriteLines.txt".
             using (StreamWriter outputFile = new StreamWriter(System.IO.Path.Combine(documentPath, "WriteLines.txt")))
-           
-            foreach (Items item in ListItems1.Items)
-            {
-                outputFile.WriteLine($"{item.Id + "." + " " + item.Time}");
-            }
+
+                foreach (Items item in ListItems1.Items)
+                {
+                    outputFile.WriteLine($"{item.Id + "." + " " + item.Time}");
+                }
         }
-
-        private void Path_label3_KeyDown(object sender, KeyEventArgs e)
+        private void label1_DoubleClick(object sender, EventArgs e)
         {
-            {
-                if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.F1)
-                    Path_label3.Content = MessageBox.Show("HELLO");
-            }
-        }
 
-        private IntPtr _windowHandle;
-        private HwndSource _source;
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            base.OnSourceInitialized(e);
-
-            _windowHandle = new WindowInteropHelper(this).Handle;
-            _source = HwndSource.FromHwnd(_windowHandle);
-            _source.AddHook(HwndHook);
-
-            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_CONTROL, VK_CAPITAL); //CTRL + CAPS_LOCK
-        }
-
-        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            const int WM_HOTKEY = 0x0312;
-            switch (msg)
-            {
-                case WM_HOTKEY:
-                    switch (wParam.ToInt32())
-                    {
-                        case HOTKEY_ID:
-                            int vkey = (((int)lParam >> 16) & 0xFFFF);
-                            if (vkey == VK_CAPITAL)
-                            {
-                                Path_label3.Content += "CapsLock was pressed" + Environment.NewLine;
-                            }
-                            handled = true;
-                            break;
-                    }
-                    break;
-            }
-            return IntPtr.Zero;
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            _source.RemoveHook(HwndHook);
-            UnregisterHotKey(_windowHandle, HOTKEY_ID);
-            base.OnClosed(e);
+            Clipboard.SetDataObject(Path_label3.Content);
         }
 
     }
@@ -184,7 +135,6 @@ namespace StopWatch
     {
         public int Id { get; set; }
         public string Time { get; set; }
-
         public Items(int Id, string Time)
         {
             this.Id = Id;
