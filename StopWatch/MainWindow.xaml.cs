@@ -15,7 +15,12 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Windows.Threading;
 using System.IO;
-
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 namespace StopWatch
 {
     public partial class MainWindow : Window
@@ -25,11 +30,18 @@ namespace StopWatch
         private int idCount;
         private string currentTime;
 
+        public string documentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+
+
         public MainWindow()
         {
             InitializeComponent();
             Timer_Loader();
             TimerStage = eTimerStage.Paussed;
+            Path_label.Content = $"{documentPath}";
+            TextCompositionManager.AddTextInputHandler(this,
+                new TextCompositionEventHandler(OnTextComposition));
         }
 
         void Timer_Loader()
@@ -46,6 +58,10 @@ namespace StopWatch
                 CurTimer.Content = currentTime;
             }
 
+        }
+        private void OnTextComposition(object sender, TextCompositionEventArgs e)
+        {
+            Path_label3.Content = e.Text;
         }
 
         public enum eTimerStage
@@ -69,9 +85,8 @@ namespace StopWatch
         {
             Items item = new Items(++idCount, currentTime);
             ListItems1.Items.Add(item);
+            btSave.IsEnabled = true;
         }
-
-
 
         private void btStart_Click(object sender, RoutedEventArgs e)
         {
@@ -92,26 +107,27 @@ namespace StopWatch
             TimerStage = eTimerStage.Paussed;
             stopWatch.Reset();
             ListItems1.Items.Clear();
+            btSave.IsEnabled = false;
             CurTimer.Content = "00:00:00";
             idCount = 0;
         }
 
         private void btSave_Click(object sender, RoutedEventArgs e)
         {
-
             // Create a string array with the lines of text
-            // Set a variable to the Documents path.
-            string documentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
             // Append text to an existing file named "WriteLines.txt".
             using (StreamWriter outputFile = new StreamWriter(System.IO.Path.Combine(documentPath, "WriteLines.txt")))
+
                 foreach (Items item in ListItems1.Items)
                 {
                     outputFile.WriteLine($"{item.Id + "." + " " + item.Time}");
                 }
         }
-
-        // как винда понимает какая кнопка нажата через user32 библиотеку
+        private void label1_DoubleClick(object sender, EventArgs e)
+        {
+            Clipboard.SetDataObject(Path_label3.Content);
+            MessageBox.Show("You string was copied");
+        }
 
     }
 
@@ -119,13 +135,13 @@ namespace StopWatch
     {
         public int Id { get; set; }
         public string Time { get; set; }
-
         public Items(int Id, string Time)
         {
             this.Id = Id;
             this.Time = Time;
         }
     }
+
 
 
 }
